@@ -47,7 +47,7 @@ class CTRIFinalScraper:
         
         # Search categories
         self.search_categories = [
-            ("Public title of study", "1"),
+            ("Public title of study", "11"),
             ("Scientific title of study", "2"),
             ("Health Condition/ Problem Studied", "3"),
             ("Name of Principle Investigator", "4"),
