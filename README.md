@@ -1,52 +1,68 @@
-# CTRI Clinical Trials Scraper
+# CTRI Clinical Trials Scraper (Cancer Research)
+This is a production-grade, robust scraper designed to extract comprehensive clinical trial data from the **Clinical Trials Registry - India (CTRI)**. It uses a **PDF-based extraction strategy** to capture 60+ fields per trial, ensuring high data completeness even for complex layouts.
 
-This production-grade script automates the extraction of clinical trial data from the Clinical Trials Registry - India (CTRI). It is specifically configured to target cancer-related research across multiple search categories.
+## 🚀 Key Features
 
-## Features
+*   **PDF-Based Extraction**: Instead of scraping limited HTML, the bot downloads the official PDF for each trial and extracts **100% of available data** (including hidden fields like Ethics Committee approval, Funding Sources, and detailed Sample Sizes).
+*   **Robust Multi-Format Parser**: Handles varied PDF layouts (standard vs. merged cells) found across 4,000+ trials.
+*   **Intelligent De-duplication**: Automatically identifies duplicate trials across different search categories (e.g., "Lung Cancer" vs. "Breast Cancer") using unique CTRI Numbers.
+*   **Checkpoint & Resume**:
+    *   Saves progress every **10 trials** to `ctri_cancer_trials_PROGRESS.csv`.
+    *   Auto-resumes from where it left off in case of interruptions.
+*   **Crash Recovery**: Automatically detects browser crashes, popups, or network timeouts and restarts the session seamlessly.
+*   **Rate Limiting**: Includes configurable delays (default 2s) to respect server load and avoid IP bans.
 
-- **Auto-Recovery**: Automatically detects browser or driver crashes and restarts the session without losing current progress.
-- **Resume Capability**: Supports resuming from a specific category or trial index to handle long-running tasks or network interruptions.
-- **Data Persistence**: Saves progress every 25 trials to a CSV file to prevent data loss.
-- **Optimized Performance**: Uses eager page load strategies and disables heavy browser elements like images for faster scraping (approximately 0.8s per trial).
+## 🛠️ Installation
 
-## Technical Requirements
+### Prerequisites
+*   **Python 3.8+**
+*   **Google Chrome** (latest version)
 
-- **Python 3.x**
-- **Chrome Browser**
-- **Dependencies**:
-  - `selenium`
-  - `pandas`
-  - `webdriver-manager`
+### Steps
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-username/ctri-scraper.git
+    cd ctri-scraper
+    ```
 
-### Install dependencies using:
-```bash
-pip install selenium pandas webdriver-manager
-```
+2.  **Install dependencies:**
+    ```bash
+    pip install selenium pandas pdfplumber webdriver-manager requests
+    ```
 
-## Usage
+## 💻 Usage
 
-Run the script:
-```bash
-python ctri_scraper_final.py
-```
+1.  **Run the scraper:**
+    ```bash
+    python ctri_scraper_final.py
+    ```
 
-The script will prompt for a manual CAPTCHA entry on the CTRI search page. After solving the CAPTCHA and clicking search, return to the terminal and press **ENTER** to start the automated extraction.
+2.  **Manual CAPTCHA Step**:
+    *   The browser will open and navigate to the CTRI search page.
+    *   **Enter the CAPTCHA manually** in the browser window and click "Search".
+    *   Once the search results load, return to your terminal and press **ENTER**.
 
-## Output Files
+3.  **Sit back and relax**:
+    *   The bot will iterate through all categories (Public Title, Scientific Title, etc.).
+    *   It opens each trial -> Generates PDF -> Extracts Data -> Saves to CSV.
+    *   Real-time progress is shown in the terminal with emoji indicators:
+        *   ✅ **PDF**: Successful extraction
+        *   🔄 **Duplicate**: Skipped duplicate trial
+        *   💾 **Saved**: Progress saved to disk
 
-- **`ctri_cancer_trials_FINAL.csv`**: The final dataset containing all successfully scraped trials.
-- **`ctri_cancer_trials_PROGRESS.csv`**: A temporary file used to store progress and enable the resume feature.
-- **`ctri_final.log`**: Detailed execution logs including timestamps, success messages, and any encountered errors.
+## 📂 Output
 
-## Data Fields Captured
+*   **`ctri_cancer_trials_FINAL.csv`**: The master dataset containing all unique, fully scrapped trials.
+*   **`ctri_cancer_trials_PROGRESS.csv`**: Intermediate file for resuming interruptions.
+*   **`ctri_final.log`**: Detailed logs for debugging.
 
-The scraper extracts comprehensive details including:
-
-- CTRI Number and Study Titles
-- Recruitment Status and Brief Summary
-- Health Conditions and Interventions
-- Primary/Secondary Outcome Measures
-- Sponsor and Collaborator Information
-- Demographic Data (Age, Gender)
-- Phase and Study Design
-- Important Dates (Registration, Enrollment, Completion)
+## 📊 Data Fields (60+ Columns)
+The scraper captures granular details including:
+*   **Core IDs**: `CTRI Number`, `Registration Date`, `Secondary IDs`
+*   **Study Details**: `Public/Scientific Title`, `Study Design`, `Phase`, `Type of Trial`
+*   **Sponsors**: `Primary Sponsor`, `Secondary Sponsor`, `Funding Source`
+*   **Contacts**: `Principal Investigator`, `Contact Person` (Name, Email, Phone, Address)
+*   **Design**: `Randomization Method`, `Blinding`, `Concealment`, `Intervention Details`
+*   **Enrollment**: `Target Sample Size`, `Final Enrollment (Total/India)`, `Recruitment Status`
+*   **Outcomes**: `Primary Outcome Measures`, `Secondary Outcome Measures`, `Timepoints`
+*   **Ethics**: `Committee Name`, `Approval Status`
