@@ -1,5 +1,5 @@
 # CTRI Clinical Trials Scraper (Cancer Research)
-This is a robust scraper designed to extract comprehensive clinical trial data from the **Clinical Trials Registry - India (CTRI)**. It uses a **PDF-based extraction strategy** to capture 60+ fields per trial, this can be a base for a better and more accurate scraper.
+This scraper systematically extracts detailed clinical trial data from the Clinical Trials Registry – India (CTRI) using a PDF-based parsing strategy, capturing 60+ structured fields per trial. It provides a solid baseline for building a more refined and high-precision extraction pipeline...
 
 ## 🚀 Key Features
 
